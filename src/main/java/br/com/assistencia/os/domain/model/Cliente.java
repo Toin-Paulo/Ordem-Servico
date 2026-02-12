@@ -31,5 +31,4 @@ public class Cliente {
     @Size(max = 20)
     private String telefone;
 
-    // Getters e Setters (ou use Lombok @Data)
 }

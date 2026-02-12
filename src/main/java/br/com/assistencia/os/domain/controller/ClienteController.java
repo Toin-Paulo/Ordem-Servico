@@ -26,4 +26,5 @@ public class ClienteController {
     public Cliente adicionar(@Valid @RequestBody Cliente cliente) {
         return clienteRepository.save(cliente);
     }
+
 }
