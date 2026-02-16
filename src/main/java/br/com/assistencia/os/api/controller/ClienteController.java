@@ -1,4 +1,4 @@
-package br.com.assistencia.os.domain.controller;
+package br.com.assistencia.os.api.controller;
 
 import br.com.assistencia.os.domain.model.Cliente;
 import br.com.assistencia.os.domain.repository.ClienteRepository;
