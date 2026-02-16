@@ -1,5 +1,6 @@
 package br.com.assistencia.os.api.controller;
 
+import br.com.assistencia.os.domain.model.Comentario;
 import br.com.assistencia.os.domain.model.OrdemServico;
 import br.com.assistencia.os.domain.service.GestaoOrdemServicoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,12 @@ public class OrdemServicoController {
     @ResponseStatus(HttpStatus.CREATED)
     public OrdemServico criar(@RequestBody OrdemServico ordemServico) {
         return gestaoOrdemServicoService.criar(ordemServico);
+    }
+
+    @PostMapping("{/ordemServicoId}/comentarios")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Comentario adicionarComentario(@PathVariable Long ordemServicoId, @RequestBody String descricao) {
+        return gestaoOrdemServicoService.adicionarComentario(ordemServicoId, descricao);
     }
 
 }
