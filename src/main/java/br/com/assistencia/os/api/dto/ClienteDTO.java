@@ -1,4 +1,4 @@
-package br.com.assistencia.os.domain.dto;
+package br.com.assistencia.os.api.dto;
 
 import lombok.Getter;
 import lombok.Setter;
