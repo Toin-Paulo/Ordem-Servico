@@ -8,7 +8,6 @@ import br.com.assistencia.os.domain.model.OrdemServico;
 import br.com.assistencia.os.domain.service.GestaoOrdemServicoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,18 +20,6 @@ public class OrdemServicoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrdemServico criar(@RequestBody OrdemServico ordemServico) {
-        return gestaoOrdemServicoService.criar(ordemServico);
-    }
-
-    @PostMapping("{/ordemServicoId}/comentarios")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Comentario adicionarComentario(@PathVariable Long ordemServicoId, @RequestBody String descricao) {
-        return gestaoOrdemServicoService.adicionarComentario(ordemServicoId, descricao);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public OrdemServicoDTO criar(@Valid @RequestBody OrdemServicoInput   ordemServicoInput) {
 
         OrdemServico novaOrdem = toEntity(ordemServicoInput);
@@ -40,6 +27,12 @@ public class OrdemServicoController {
         OrdemServico ordemCriada = gestaoOrdemServicoService.criar(novaOrdem);
 
         return toDTO(ordemCriada);
+    }
+
+    @PostMapping("/{ordemServicoId}/comentarios")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Comentario adicionarComentario(@PathVariable Long ordemServicoId, @RequestBody String descricao) {
+        return gestaoOrdemServicoService.adicionarComentario(ordemServicoId, descricao);
     }
 
     private OrdemServico toEntity(OrdemServicoInput  ordemServicoInput) {
@@ -69,7 +62,5 @@ public class OrdemServicoController {
 
         return dto;
     }
-
-
 
 }
