@@ -5,11 +5,16 @@ import br.com.assistencia.os.api.input.OrdemServicoInput;
 import br.com.assistencia.os.domain.model.Cliente;
 import br.com.assistencia.os.domain.model.Comentario;
 import br.com.assistencia.os.domain.model.OrdemServico;
+import br.com.assistencia.os.domain.repository.OrdemServicoRepository;
 import br.com.assistencia.os.domain.service.GestaoOrdemServicoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/ordens-servico")
@@ -17,6 +22,9 @@ public class OrdemServicoController {
 
     @Autowired
     private GestaoOrdemServicoService gestaoOrdemServicoService;
+
+    @Autowired
+    private OrdemServicoRepository ordemServicoRepository;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -27,6 +35,22 @@ public class OrdemServicoController {
         OrdemServico ordemCriada = gestaoOrdemServicoService.criar(novaOrdem);
 
         return toDTO(ordemCriada);
+    }
+
+    @GetMapping
+    public List<OrdemServicoDTO> listar() {
+        List<OrdemServico> ordensServico = ordemServicoRepository.findAll();
+
+        return ordensServico.stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{ordemServicoId}")
+    public ResponseEntity<OrdemServicoDTO> buscar(@PathVariable long ordemServicoId) {
+        return ordemServicoRepository.findById(ordemServicoId)
+                .map(ordemServico -> ResponseEntity.ok(toDTO(ordemServico)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/{ordemServicoId}/comentarios")
