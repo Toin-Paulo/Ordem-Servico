@@ -9,6 +9,7 @@ import br.com.assistencia.os.domain.repository.ComentarioRepository;
 import br.com.assistencia.os.domain.repository.OrdemServicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 
@@ -24,6 +25,7 @@ public class GestaoOrdemServicoService {
     @Autowired
     private ComentarioRepository comentarioRepository;
 
+    @Transactional
     public OrdemServico criar(OrdemServico ordemServico) {
         Cliente cliente = clienteRepository.findById(ordemServico.getCliente().getId())
                 .orElseThrow(() -> new RuntimeException("Cliente não Encontrado"));
@@ -35,6 +37,7 @@ public class GestaoOrdemServicoService {
         return ordemServicoRepository.save(ordemServico);
     }
 
+    @Transactional
     public Comentario adicionarComentario(Long ordemServicoId, String descricao) {
         OrdemServico ordemServico = ordemServicoRepository.findById(ordemServicoId)
                 .orElseThrow(() -> new RuntimeException("Ordem de serviço não encontrada"));
