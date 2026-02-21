@@ -2,6 +2,7 @@ package br.com.assistencia.os.api.controller;
 
 import br.com.assistencia.os.domain.model.Cliente;
 import br.com.assistencia.os.domain.repository.ClienteRepository;
+import br.com.assistencia.os.domain.service.CadastroClienteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,9 @@ public class ClienteController {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    @Autowired
+    private CadastroClienteService cadastroClienteService;
+
     @GetMapping
     public List<Cliente> listar() {
         return clienteRepository.findAll();
@@ -27,4 +31,9 @@ public class ClienteController {
         return clienteRepository.save(cliente);
     }
 
+    @DeleteMapping("/{clienteId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long clienteId) {
+        cadastroClienteService.excluir(clienteId);
+    }
 }

@@ -8,6 +8,7 @@ import br.com.assistencia.os.domain.model.Comentario;
 import br.com.assistencia.os.domain.model.OrdemServico;
 import br.com.assistencia.os.domain.repository.OrdemServicoRepository;
 import br.com.assistencia.os.domain.service.GestaoOrdemServicoService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,6 +60,15 @@ public class OrdemServicoController {
     public Comentario adicionarComentario(@PathVariable Long ordemServicoId,@Valid @RequestBody ComentarioInput comentarioInput) {
         Comentario comentario = gestaoOrdemServicoService.adicionarComentario(ordemServicoId,comentarioInput.getDescricao());
         return toComentarioDTO(comentario);
+    }
+
+    @DeleteMapping("/{ordemServicoId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable long ordemServicoId) {
+        if (!ordemServicoRepository.existsById(ordemServicoId)) {
+            throw new EntityNotFoundException("Ordem de serviço não Encontrada!");
+        }
+        ordemServicoRepository.deleteById(ordemServicoId);
     }
 
     private OrdemServico toEntity(OrdemServicoInput  ordemServicoInput) {
