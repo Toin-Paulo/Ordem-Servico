@@ -27,4 +27,21 @@ public class OrdemServico {
 
     private OffsetDateTime dataAbertura;
     private OffsetDateTime dataFinalizacao;
+
+    public void finalizar() {
+        if (!StatusOrdemServico.ABERTA.equals(getStatus())) {
+            throw new IllegalStateException("Ordem de serviço não pode ser finalizada.");
+        }
+
+        setStatus(StatusOrdemServico.FINALIZADA);
+        setDataAbertura(OffsetDateTime.now());
+    }
+
+    public void cancelar() {
+        if (!StatusOrdemServico.ABERTA.equals(getStatus())) {
+            throw new IllegalStateException("Ordem de serviço não pode ser cancelada.");
+        }
+
+        setStatus(StatusOrdemServico.CANCELADA);
+    }
 }

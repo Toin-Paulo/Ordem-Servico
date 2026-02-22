@@ -49,4 +49,20 @@ public class GestaoOrdemServicoService {
 
         return comentarioRepository.save(comentario);
     }
+
+    @Transactional
+    public void finalizar(Long ordemServicoId) {
+        OrdemServico ordemServico = ordemServicoRepository.findById(ordemServicoId)
+                .orElseThrow(() -> new RuntimeException("Ordem de serviço não encontrada"));
+
+        ordemServico.finalizar();
+    }
+
+    @Transactional
+    public void cancelar(Long ordemServicoId) {
+        OrdemServico ordemServico = ordemServicoRepository.findById(ordemServicoId)
+                .orElseThrow(() -> new RuntimeException("Ordem de serviço não encontrada"));
+
+        ordemServico.cancelar();
+    }
 }

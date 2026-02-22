@@ -41,15 +41,11 @@ public class OrdemServicoController {
 
     @GetMapping
     public List<OrdemServicoDTO> listar() {
-        List<OrdemServico> ordensServico = ordemServicoRepository.findAll();
-
-        return ordensServico.stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+        return toCollectionDTO(ordemServicoRepository.findAll());
     }
 
     @GetMapping("/{ordemServicoId}")
-    public ResponseEntity<OrdemServicoDTO> buscar(@PathVariable long ordemServicoId) {
+    public ResponseEntity<OrdemServicoDTO> buscar(@PathVariable Long ordemServicoId) {
         return ordemServicoRepository.findById(ordemServicoId)
                 .map(ordemServico -> ResponseEntity.ok(toDTO(ordemServico)))
                 .orElse(ResponseEntity.notFound().build());
@@ -69,6 +65,24 @@ public class OrdemServicoController {
             throw new EntityNotFoundException("Ordem de serviço não Encontrada!");
         }
         ordemServicoRepository.deleteById(ordemServicoId);
+    }
+
+    @PutMapping("/{ordemServicoId}/finalizacao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void finalizar(@PathVariable long ordemServicoId) {
+        gestaoOrdemServicoService.finalizar(ordemServicoId);
+    }
+
+    @PutMapping("/{ordemServicoId}/cancelamento")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void cancelar(@PathVariable long ordemServicoId) {
+        gestaoOrdemServicoService.cancelar(ordemServicoId);
+    }
+
+    private List<OrdemServicoDTO> toCollectionDTO(List<OrdemServico> ordensServico) {
+        return ordensServico.stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     private OrdemServico toEntity(OrdemServicoInput  ordemServicoInput) {
