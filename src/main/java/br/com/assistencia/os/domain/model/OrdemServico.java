@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,6 +26,9 @@ public class OrdemServico {
 
     @Enumerated(EnumType.STRING)
     private StatusOrdemServico status;
+
+    @OneToMany(mappedBy = "ordemServico", cascade = CascadeType.ALL)
+    private List<Comentario> comentarios = new ArrayList<>();
 
     private OffsetDateTime dataAbertura;
     private OffsetDateTime dataFinalizacao;

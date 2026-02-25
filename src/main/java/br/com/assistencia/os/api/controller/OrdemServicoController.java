@@ -1,5 +1,6 @@
 package br.com.assistencia.os.api.controller;
 
+import br.com.assistencia.os.api.dto.ComentarioDTO;
 import br.com.assistencia.os.api.dto.OrdemServicoDTO;
 import br.com.assistencia.os.api.input.ComentarioInput;
 import br.com.assistencia.os.api.input.OrdemServicoInput;
@@ -53,7 +54,7 @@ public class OrdemServicoController {
 
     @PostMapping("/{ordemServicoId}/comentarios")
     @ResponseStatus(HttpStatus.CREATED)
-    public Comentario adicionarComentario(@PathVariable Long ordemServicoId,@Valid @RequestBody ComentarioInput comentarioInput) {
+    public ComentarioDTO adicionarComentario(@PathVariable Long ordemServicoId, @Valid @RequestBody ComentarioInput comentarioInput) {
         Comentario comentario = gestaoOrdemServicoService.adicionarComentario(ordemServicoId,comentarioInput.getDescricao());
         return toComentarioDTO(comentario);
     }
@@ -110,15 +111,21 @@ public class OrdemServicoController {
         dto.setStatus(os.getStatus());
         dto.setDataAbertura(os.getDataAbertura());
 
+        if(os.getComentarios() != null) {
+            List<ComentarioDTO> comentarioDTO = os.getComentarios().stream()
+                    .map(comentario -> toComentarioDTO(comentario))
+                    .collect(Collectors.toList());
+            dto.setComentarios(comentarioDTO);
+        }
+
         return dto;
     }
 
-    private Comentario toComentarioDTO(Comentario comentario) {
-        Comentario dto = new Comentario();
+    private ComentarioDTO toComentarioDTO(Comentario comentario) {
+        ComentarioDTO dto = new ComentarioDTO();
         dto.setId(comentario.getId());
         dto.setDescricao(comentario.getDescricao());
         dto.setDataEnvio(comentario.getDataEnvio());
-
         return dto;
     }
 
