@@ -12,4 +12,5 @@ public class ComentarioDTO {
     private Long id;
     private String descricao;
     private OffsetDateTime dataEnvio;
+    private OffsetDateTime dataFinalizacao;
 }
