@@ -28,7 +28,6 @@ public class ClienteController {
 
     @GetMapping
     public List<ClienteDTO> listar() {
-        // Converte a lista de entidades para lista de DTOs
         return clienteRepository.findAll().stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
@@ -37,13 +36,9 @@ public class ClienteController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ClienteDTO adicionar(@Valid @RequestBody ClienteInput clienteInput) {
-        // Converte Input para Entidade
         Cliente novoCliente = toEntity(clienteInput);
-
-        // Salva via Service
         Cliente clienteSalvo = cadastroClienteService.salvar(novoCliente);
 
-        // Retorna o DTO
         return toDTO(clienteSalvo);
     }
 
@@ -53,7 +48,6 @@ public class ClienteController {
         cadastroClienteService.excluir(clienteId);
     }
 
-    // Métodos de conversão (Poderia usar ModelMapper para simplificar)
     private ClienteDTO toDTO(Cliente cliente) {
         ClienteDTO dto = new ClienteDTO();
         dto.setId(cliente.getId());
