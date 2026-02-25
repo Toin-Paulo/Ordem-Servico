@@ -39,7 +39,7 @@ public class OrdemServico {
         }
 
         setStatus(StatusOrdemServico.FINALIZADA);
-        setDataAbertura(OffsetDateTime.now());
+        setDataFinalizacao(OffsetDateTime.now());
     }
 
     public void cancelar() {
