@@ -23,9 +23,6 @@ public class ClienteController {
     @Autowired
     private CadastroClienteService cadastroClienteService;
 
-    @Autowired
-
-
     @GetMapping
     public List<ClienteDTO> listar() {
         return clienteRepository.findAll().stream()
